@@ -1,21 +1,17 @@
-
 from .record import Record
 
 
 class Span(Record):
-    __attributes__ = ['start', 'stop', 'type']
+    __attributes__ = ["start", "stop", "type", "proba"]
 
-    def __init__(self, start, stop, type=None):
+    def __init__(self, start, stop, type=None, proba=1):
         self.start = start
         self.stop = stop
         self.type = type
+        self.proba = proba
 
     def offset(self, delta):
-        return Span(
-            self.start + delta,
-            self.stop + delta,
-            self.type
-        )
+        return Span(self.start + delta, self.stop + delta, self.type, self.proba)
 
 
 def offset_spans(spans, delta):
