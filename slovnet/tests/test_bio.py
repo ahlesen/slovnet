@@ -39,6 +39,19 @@ TESTS = [
     ]
 ]
 
+TESTS_W_PROBAS = [
+    [
+        [T1, T2, T3],
+        [O, O, O],
+        [1, 1, 0]
+    ],
+    [
+        [],
+        [],
+        []
+    ]
+]
+
 IO_TESTS = [
     [
         [T1, T2, T3],
@@ -81,6 +94,34 @@ BIO_TESTS = [
     ],
 ]
 
+BIO_TESTS_W_PROBAS = [
+    [
+        [T1, T2, T3],
+        [B_PER, O, O],
+        [1,0,0]
+    ],
+    [
+        [T1, T2, T3],
+        [B_PER, I_PER, O],
+        [1,0,0]
+    ],
+    [
+        [T1, T2],
+        [B_PER, I_PER],
+        [1,0,0]
+    ],
+    [
+        [T1, T2, T3],
+        [B_PER, B_LOC, O],
+        [1,0,0]
+    ],
+    [
+        [T1, T2, T3],
+        [B_PER, B_PER, O],
+        [1,0,0]
+    ],
+]
+
 CONVERT_TESTS = [
     [
         [B_PER, I_PER],
@@ -97,10 +138,10 @@ def test_io(test):
     assert tags == list(guess)
 
 
-@pytest.mark.parametrize('test', TESTS + BIO_TESTS)
+@pytest.mark.parametrize('test', TESTS_W_PROBAS + BIO_TESTS_W_PROBAS)
 def test_bio(test):
-    tokens, tags = test
-    spans = bio_spans(tokens, tags)
+    tokens, tags, probas = test
+    spans = bio_spans(tokens, tags, probas)
     guess = spans_bio(tokens, spans)
     assert tags == list(guess)
 

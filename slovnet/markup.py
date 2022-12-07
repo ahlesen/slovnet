@@ -63,7 +63,7 @@ def show_span_markup(markup):
 
 
 class TagToken(Record):
-    __attributes__ = ['text', 'tag']
+    __attributes__ = ['text', 'tag', 'proba']
 
 
 class TagMarkup(Record):
@@ -79,19 +79,23 @@ class TagMarkup(Record):
     @property
     def tags(self):
         return [_.tag for _ in self.tokens]
+    
+    @property
+    def probas(self):
+        return [_.proba for _ in self.tokens]
 
     @classmethod
     def from_tuples(cls, tuples):
         return cls([
-            TagToken(word, tag)
-            for word, tag in tuples
+            TagToken(word, tag, proba)
+            for word, tag, proba in tuples
         ])
 
 
 class BIOMarkup(TagMarkup):
     def to_span(self, text):
         tokens = find_tokens(text, self.words)
-        spans = list(bio_spans(tokens, self.tags))
+        spans = list(bio_spans(tokens, self.tags, self.probas))
         return SpanMarkup(text, spans)
 
 

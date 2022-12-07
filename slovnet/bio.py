@@ -98,29 +98,28 @@ def spans_bio(tokens, spans):
             if token.stop >= span.stop:
                 span = next(spans)
         yield format_bio(part, type)
+        
 
-
-def bio_spans(tokens, tags):
+def bio_spans(tokens, tags, probas):
     previous = None
     start = None
     stop = None
-    for token, tag in zip(tokens, tags):
+    for token, tag, proba in zip(tokens, tags, probas):
         part, type = parse_bio(tag)
         if part == O:
             if previous:
-                yield Span(start, stop, previous)
+                yield Span(start, stop, previous, proba)
                 previous = None
         elif part == B:
             if previous:
-                yield Span(start, stop, previous)
+                yield Span(start, stop, previous, proba)
             previous = type
             start = token.start
             stop = token.stop
         elif part == I:
             stop = token.stop
     if previous:
-        yield Span(start, stop, previous)
-
+        yield Span(start, stop, previous, proba)
 
 #########
 #
