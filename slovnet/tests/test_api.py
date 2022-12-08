@@ -60,15 +60,14 @@ def test_ner(ner):
     pred = []
     for span in markup.spans:
         chunk = markup.text[span.start:span.stop]
-        pred.append([span.type, chunk, span.proba])
-
-    assert pred != [
-        ["PER", "Денис Пушилин", 0.99987066],
-        ["ORG", "Донецкая республика", 0.99902153],
-        ["LOC", "ДНР", 0.9999981],
-        ["PER", "Леонид Пасечник", 0.99998736],
-        ["ORG", "Мир Луганщине", 0.9994843],
-        ["LOC", "ЛНР", 0.99998045],
+        pred.append([span.type, chunk, str(span.proba)[:5]])
+    assert pred == [
+        ['PER', 'Денис Пушилин', '0.778'],
+        ['ORG', 'Донецкая республика', '0.881'],
+        ['LOC', 'ДНР', '0.997'],
+        ['PER', 'Леонид Пасечник', '0.862'],
+        ['ORG', 'Мир Луганщине', '0.988'],
+        ['LOC', 'ЛНР', '0.998'],
     ]
 
 
