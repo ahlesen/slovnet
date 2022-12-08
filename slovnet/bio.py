@@ -102,22 +102,26 @@ def spans_bio(tokens, spans):
 
 def bio_spans(tokens, tags, probas):
     previous = None
+    previous_proba = None
     start = None
     stop = None
     for token, tag, proba in zip(tokens, tags, probas):
         part, type = parse_bio(tag)
         if part == O:
             if previous:
-                yield Span(start, stop, previous, proba)
+                yield Span(start, stop, previous, previous_proba)
                 previous = None
+                previous_proba = None
         elif part == B:
             if previous:
-                yield Span(start, stop, previous, proba)
+                yield Span(start, stop, previous, previous_proba)
             previous = type
+            previous_proba = proba
             start = token.start
             stop = token.stop
         elif part == I:
             stop = token.stop
+            previous_proba = proba if proba > previous_proba else previous_proba
     if previous:
         yield Span(start, stop, previous, proba)
 
