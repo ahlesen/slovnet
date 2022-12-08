@@ -50,7 +50,7 @@ class NERInfer(Infer):
     def process(self, inputs):
         ### как дб
         for input in inputs:
-            input = input.to(self.model.device)
+            # input = input.to(self.model.device)
             pred = self.model(input.word_id, input.shape_id, input.pad_mask)
             yield from self.model.ner.crf.decode(pred, ~input.pad_mask)
 
