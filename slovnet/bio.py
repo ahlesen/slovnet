@@ -121,7 +121,7 @@ def bio_spans(tokens, tags, probas):
             stop = token.stop
         elif part == I:
             stop = token.stop
-            previous_proba = proba if proba > previous_proba else previous_proba
+            previous_proba = previous_proba if previous_proba and (proba < previous_proba) else proba
     if previous:
         yield Span(start, stop, previous, proba)
 
